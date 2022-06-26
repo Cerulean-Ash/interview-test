@@ -79,9 +79,7 @@ const Game = () => {
   // console.log(gameHistory[gameHistory.length - 1].squares);
   // console.log(gameHistory[gameHistory.length - 1].squares);
 
-  // let winningMove;
   // if (winner) {
-  //   winningMove = `Winning move is move number ${gameHistory.length - 1}`;
   //   let winningIndex;
   //   gameHistory[gameHistory.length - 2].squares.forEach((value, index) => {
   //     if (value !== gameHistory[gameHistory.length - 1].squares[index]) {
