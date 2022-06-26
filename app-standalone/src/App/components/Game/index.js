@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Board from "../Board";
+import PlayerForm from "../PlayerForm/PlayerForm";
+import LeagueTable from "../LeagueTable/LeagueTable";
 
 /**
  * A game of tic-tac-toe.
@@ -10,7 +12,10 @@ const Game = () => {
   ]); // Start of game
   const [stepNumber, setStepNumber] = useState(0);
   const [xIsNext, setXisNext] = useState(true);
-
+  const [playerName, setPlayerName] = useState({
+    player1: "Player X",
+    player2: "Player O",
+  });
   const [winGameHistory, setWinGameHistory] = useState([]);
 
   const calculateWinner = (squares) => {
@@ -32,18 +37,18 @@ const Game = () => {
         squares[a] === squares[b] &&
         squares[a] === squares[c]
       ) {
-        return squares[a]; //returns on victory = can use the X or O string to score winner
+        return { square: squares[a], line: lines[i] };
       }
     }
 
-    return null;
+    return { square: null, line: [] };
   };
 
   const handleClick = (i) => {
     const history = gameHistory.slice(0, stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares).square || squares[i]) {
       return;
     }
 
@@ -54,8 +59,8 @@ const Game = () => {
     setStepNumber(history.length);
     setXisNext(!xIsNext);
 
-    if (calculateWinner(squares)) {
-      setWinGameHistory([...winGameHistory, calculateWinner(squares)]);
+    if (calculateWinner(squares).square) {
+      setWinGameHistory([...winGameHistory, calculateWinner(squares).square]);
     }
   };
 
@@ -65,7 +70,7 @@ const Game = () => {
   };
 
   const current = gameHistory[stepNumber];
-  const winner = calculateWinner(current.squares); // returns the winner - to score
+  const winner = calculateWinner(current.squares).square;
 
   const moves = gameHistory.map((step, move) => {
     const desc = move ? "Go to move #" + move : "Go to game start";
@@ -76,20 +81,6 @@ const Game = () => {
     );
   });
 
-  // console.log(gameHistory[gameHistory.length - 1].squares);
-  // console.log(gameHistory[gameHistory.length - 1].squares);
-
-  // if (winner) {
-  //   let winningIndex;
-  //   gameHistory[gameHistory.length - 2].squares.forEach((value, index) => {
-  //     if (value !== gameHistory[gameHistory.length - 1].squares[index]) {
-  //       return (winningIndex = index);
-  //     }
-  //   });
-  //   console.log(winningIndex);
-  //   console.log(gameHistory);
-  // }
-
   let status;
   if (winner) {
     status = "Winner: " + winner;
@@ -97,15 +88,34 @@ const Game = () => {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
+  const handlePlayerNameChange = (value, player_num) => {
+    let player = `player${player_num}`;
+    setPlayerName({ ...playerName, [player]: value });
+  };
+
   return (
     <div className="game">
+      <PlayerForm
+        symbol="X"
+        onChange={(value) => handlePlayerNameChange(value, 1)}
+      />
+      <PlayerForm
+        symbol="O"
+        onChange={(value) => handlePlayerNameChange(value, 2)}
+      />
       <div className="game-board">
-        <Board squares={current.squares} onClick={(i) => handleClick(i)} />
+        <Board
+          squares={current.squares}
+          winningLine={calculateWinner(current.squares.slice()).line}
+          onClick={(i) => handleClick(i)}
+        />
       </div>
       <div className="game-info">
         <div>{status}</div>
         <ol>{moves}</ol>
-        <div>{winGameHistory}</div>
+      </div>
+      <div className="winner-game">
+        <LeagueTable winGameHistory={winGameHistory} playerName={playerName} />
       </div>
     </div>
   );
