@@ -24,13 +24,23 @@ const LeagueTable = ({ winGameHistory, playerName }) => {
             );
           })}
         </tbody>
-        <tfoot>
+      </table>
+      <table className="table table-striped totals">
+        <thead>
           <tr>
-            <td>Total</td>
-            <td>{winGameHistory.filter((e) => e == "X").length}</td>
-            <td>{winGameHistory.filter((e) => e == "O").length}</td>
+            <th colSpan="2">Totals</th>
           </tr>
-        </tfoot>
+        </thead>
+        <tbody>
+          <tr>
+            <th>{playerName.player1}</th>
+            <th>{winGameHistory.filter((e) => e === "X").length}</th>
+          </tr>
+          <tr>
+            <th>{playerName.player2}</th>
+            <th>{winGameHistory.filter((e) => e === "O").length}</th>
+          </tr>
+        </tbody>
       </table>
     </div>
   );

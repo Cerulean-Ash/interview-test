@@ -9,12 +9,14 @@ const PlayerForm = ({ symbol, onChange }) => {
   };
 
   return (
-    <div>
-      <div className="ui form">
-        <div className="field">
-          <label>Player {symbol}:</label>
-          <input value={playerName} onChange={handleChange} className="input" />
-        </div>
+    <div className="form">
+      <div className="field">
+        <label className="form-label">Player {symbol}:</label>
+        <input
+          value={playerName}
+          onChange={handleChange}
+          className="input form-control"
+        />
       </div>
     </div>
   );

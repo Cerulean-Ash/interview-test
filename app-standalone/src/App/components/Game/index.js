@@ -53,7 +53,6 @@ const Game = () => {
     }
 
     squares[i] = xIsNext ? "X" : "O";
-    console.log(squares);
 
     setGameHistory([...history, { squares }]);
     setStepNumber(history.length);
@@ -76,16 +75,21 @@ const Game = () => {
     const desc = move ? "Go to move #" + move : "Go to game start";
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{desc}</button>
+        <button className="btn btn-primary" onClick={() => jumpTo(move)}>
+          {desc}
+        </button>
       </li>
     );
   });
 
   let status;
   if (winner) {
-    status = "Winner: " + winner;
+    status =
+      winner === "X"
+        ? "Winner: " + playerName.player1
+        : "Winner: " + playerName.player2;
   } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
+    status = "Next: " + (xIsNext ? playerName.player1 : playerName.player2);
   }
 
   const handlePlayerNameChange = (value, player_num) => {
@@ -95,27 +99,47 @@ const Game = () => {
 
   return (
     <div className="game">
-      <PlayerForm
-        symbol="X"
-        onChange={(value) => handlePlayerNameChange(value, 1)}
-      />
-      <PlayerForm
-        symbol="O"
-        onChange={(value) => handlePlayerNameChange(value, 2)}
-      />
-      <div className="game-board">
-        <Board
-          squares={current.squares}
-          winningLine={calculateWinner(current.squares.slice()).line}
-          onClick={(i) => handleClick(i)}
+      <div className="forms-wrapper">
+        <PlayerForm
+          symbol="X"
+          onChange={(value) => handlePlayerNameChange(value, 1)}
+        />
+        <PlayerForm
+          symbol="O"
+          onChange={(value) => handlePlayerNameChange(value, 2)}
         />
       </div>
-      <div className="game-info">
-        <div>{status}</div>
-        <ol>{moves}</ol>
-      </div>
-      <div className="winner-game">
-        <LeagueTable winGameHistory={winGameHistory} playerName={playerName} />
+      <div className="game-wrapper">
+        <div>
+          <div className="game-info card">
+            <h2>Game Controls</h2>
+            <div>
+              <ol>{moves}</ol>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div className="game-board card">
+            <div className="game-status">
+              <h2>{status}</h2>
+            </div>
+            <Board
+              squares={current.squares}
+              winningLine={calculateWinner(current.squares.slice()).line}
+              onClick={(i) => handleClick(i)}
+            />
+          </div>
+        </div>
+        <div>
+          <div className="card league-table">
+            <h2>Score</h2>
+            <LeagueTable
+              winGameHistory={winGameHistory}
+              playerName={playerName}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
