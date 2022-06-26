@@ -12,6 +12,7 @@ const LeagueTable = ({ winGameHistory, playerName }) => {
           </tr>
         </thead>
         <tbody>
+          {/* display each round and the winner as a row in the table */}
           {winGameHistory.map((winner, i) => {
             return (
               <tr key={i + 1}>
@@ -32,6 +33,7 @@ const LeagueTable = ({ winGameHistory, playerName }) => {
           </tr>
         </thead>
         <tbody>
+          {/* display the total score of each player */}
           <tr>
             <th>{playerName.player1}</th>
             <th>{winGameHistory.filter((e) => e === "X").length}</th>
