@@ -37,7 +37,7 @@ const Game = () => {
         squares[a] === squares[b] &&
         squares[a] === squares[c]
       ) {
-        return { square: squares[a], line: lines[i] };
+        return { square: squares[a], line: lines[i] }; // capturing the winning line here as well as the square to enable highlighting of the winning line
       }
     }
 
@@ -58,6 +58,7 @@ const Game = () => {
     setStepNumber(history.length);
     setXisNext(!xIsNext);
 
+    // capturing winning game history to enable disbaling in league table (seperate component)
     if (calculateWinner(squares).square) {
       setWinGameHistory([...winGameHistory, calculateWinner(squares).square]);
     }
@@ -82,6 +83,7 @@ const Game = () => {
     );
   });
 
+  //updated status to reflect player names
   let status;
   if (winner) {
     status =
@@ -92,6 +94,7 @@ const Game = () => {
     status = "Next: " + (xIsNext ? playerName.player1 : playerName.player2);
   }
 
+  //function to handle the changing of player names - linked to the PlayerForm component
   const handlePlayerNameChange = (value, player_num) => {
     let player = `player${player_num}`;
     setPlayerName({ ...playerName, [player]: value });

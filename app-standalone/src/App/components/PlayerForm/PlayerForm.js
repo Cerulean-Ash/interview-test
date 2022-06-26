@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+//component used to input player name and pass the name back to the game
 const PlayerForm = ({ symbol, onChange }) => {
   const [playerName, setPlayerName] = useState("");
 
